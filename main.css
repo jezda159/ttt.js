@@ -1,0 +1,72 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+body{
+    width: 100vw; min-height: 100%;
+    background: linear-gradient(to bottom right, crimson 0%, dodgerblue 100%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+header{
+    width: 100%;
+    margin: 100px auto 20px auto;
+    text-shadow: 0px 1px 1px rgba(90, 90, 90, 0.9)
+}
+header > h1{
+    text-align: center;
+    text-shadow: 0px 1px 1px rgba(90, 90, 90, 0.9);
+}
+table{
+    width: 300px; height: 300px;
+    position: fixed;
+    top: calc(50% - 150px);
+    left: calc(50% - 150px);
+    background-color: rgb(81, 187, 187);
+    outline: 5px solid rgb(100, 210, 210);
+}
+.cell{
+    width: 80px; height: 80px;
+    position: relative;
+    outline: 5px solid rgb(100, 210, 210);
+    z-index: 3;
+    color: lightgray;
+    font-weight: 600;
+    text-shadow: 0px 1px 1px rgba(90, 90, 90, 0.9);
+    text-align: center;
+}
+.cell:hover{
+    position: relative;
+    outline: 5px solid rgb(167, 247,247);
+    cursor: pointer;
+    z-index: 5;
+}
+.cell.cross:after, .cell.circle:after{
+    width: 70px; height: 70px;
+    line-height: 70px;
+    font-size: 70px;
+}
+.cell.cross:after{
+    color: dodgerblue;
+    content: "X";
+}
+.cell.circle:after{
+    color: crimson;
+    content: "0";
+}
+.alert-box{
+    width: 200px; height: 160px;
+    display: block;
+    position: fixed;
+    top: calc(50% - 100px); left: calc(50% - 80px);
+    background-color: rgb(100, 210, 210);
+    outline: solid thin rgb(81, 187, 187);
+}
+.alert-box > p{
+    text-align: center;
+}
+.hide{
+    display: none;
+}
