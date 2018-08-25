@@ -7,11 +7,11 @@ Basic, easy-to-make-&-hard-to-read project created simply for testing my reposit
 ```
 this.Looks(){
     
-    Important = false;
+    Important = true;
 
     But.It(Really){
 
-        result = "Isn't";
+        Important = false;
     }
 }
 ```
