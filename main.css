@@ -56,17 +56,3 @@ table{
     color: crimson;
     content: "0";
 }
-.alert-box{
-    width: 200px; height: 160px;
-    display: block;
-    position: fixed;
-    top: calc(50% - 100px); left: calc(50% - 80px);
-    background-color: rgb(100, 210, 210);
-    outline: solid thin rgb(81, 187, 187);
-}
-.alert-box > p{
-    text-align: center;
-}
-.hide{
-    display: none;
-}

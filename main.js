@@ -35,17 +35,16 @@ function Play(){
     var stop = false;
 
     // setup scores for all lines
-    for(x = 0; x < lines.length; x++){
+    for(var x = 0; x < lines.length; x++){
 
-        for(y = 0; y < (lines[x].CellSet.length); y++){
+        for(var y = 0; y < (lines[x].SetSum); y++){
 
-            var grid = lines[x].CellSet[y];
-            var cell = ".cell[data-grid='"+grid+"']";
+            var cell = lines[x].Cell(y);
 
             if($(cell).hasClass("cross")){
 
                 lines[x].UserScore += 1;
-            
+
             }else if($(cell).hasClass("circle")){
 
                 lines[x].AIScore += 1;
@@ -54,41 +53,32 @@ function Play(){
     }
 
     // look for critical matches
-    for(x = 0; x < lines.length; x++){
+    for(var x = 0; x < lines.length; x++){
 
-        for(y = 0; y < (lines[x].CellSet.length); y++){
+        for(var y = 0; y < (lines[x].SetSum); y++){
 
             if(! stop){
 
                 if(lines[x].UserScore == 3){ // USER WON
 
-                    setTimeout(function(){
-                        alert("YOU won");
-                        Reset();
-                    }, 200)
+                    Result("You won!");
 
-                    console.log("user win: "+grid+
-                        " ("+lines[x].CellSet[0]+" "+lines[x].CellSet[1]+" "+lines[x].CellSet[2]+")");
+                    console.log("user win: "+lines[x].CellSet[y]+" ("+lines[x].CellSet[0]+" "+lines[x].CellSet[1]+" "+lines[x].CellSet[2]+")");
                     stop = true;
 
                 }else if(lines[x].AIScore == 2){ // AI WON
 
                     for(z = 0; z < 3; z++){
 
-                        var grid = lines[x].CellSet[z];
-                        var cell = ".cell[data-grid=\""+grid+"\"]";
+                        var cell = lines[x].Cell(z);
 
                         if( ! $(cell).hasClass("set") ){
 
                             $(cell).addClass("set circle");
 
-                            setTimeout(function(){
-                                alert("AI won");
-                                Reset();
-                            }, 200);
+                            Result("AI won!");
 
-                            console.log("ai win: "+grid+
-                                " ("+lines[x].CellSet[0]+" "+lines[x].CellSet[1]+" "+lines[x].CellSet[2]+")");
+                            console.log("ai win: "+lines[x].CellSet[y]+" ("+lines[x].CellSet[0]+" "+lines[x].CellSet[1]+" "+lines[x].CellSet[2]+")");
                             stop = true;
                         }
                     }
@@ -98,9 +88,9 @@ function Play(){
     }
 
     // look for additional matches
-    for(x = 0; x < lines.length; x++){
+    for(var x = 0; x < lines.length; x++){
 
-        for(y = 0; y < (lines[x].CellSet.length); y++){
+        for(var y = 0; y < (lines[x].SetSum); y++){
 
             if(! stop){
 
@@ -108,31 +98,26 @@ function Play(){
 
                     for(z = 0; z < 3; z++){
 
-                        var grid = lines[x].CellSet[z];
-                        var cell = ".cell[data-grid=\""+grid+"\"]";
+                        var cell = lines[x].Cell(z);
 
                         if( ! $(cell).hasClass("set") ){
 
                             $(cell).addClass("set circle");
                             lines[x].AIScore += 1;
 
-                            console.log("defend: "+grid);
+                            console.log("defend: "+lines[x].CellSet[z]);
                             stop = true;
                         }
                     }
 
                 }else if( $(".set").length == 9){ // TIE
 
-                    setTimeout(function(){
-                        alert("it's a TIE");
-                        Reset();
-                    }, 200)
+                    Result("It's a TIE");
 
                     console.log("tie");
                     stop = true;
-
                 }
-            }            
+            } 
         }
     }
 
@@ -154,25 +139,38 @@ function Play(){
         }
     }
 
-    // SCORE TROUBLE SHOOTING
-    /*console.log("user: \n | "+lines[0].UserScore+"; "+lines[1].UserScore+"; "+lines[2].UserScore+
-                     " \n - "+lines[3].UserScore+"; "+lines[4].UserScore+"; "+lines[5].UserScore+
-                     " \n \\ "+lines[6].UserScore+"; / "+lines[7].UserScore);
-    console.log("ai: \n | "+lines[0].AIScore+"; "+lines[1].AIScore+"; "+lines[2].AIScore+
-                     " \n - "+lines[3].AIScore+"; "+lines[4].AIScore+"; "+lines[5].AIScore+
-                     " \n \\ "+lines[6].AIScore+"; / "+lines[7].AIScore);
-    */
+    //ScoreTroubleShooting(lines);
 }
+
+function ScoreTroubleShooting(lines){
+
+    console.log("user: \n verti> "+lines[0].UserScore+"; "+lines[1].UserScore+"; "+lines[2].UserScore+
+                     " \n horiz> "+lines[3].UserScore+"; "+lines[4].UserScore+"; "+lines[5].UserScore+
+                     " \n diago> LtoR "+lines[6].UserScore+"; RtoL "+lines[7].UserScore);
+
+    console.log("ai: \n verti> "+lines[0].AIScore+"; "+lines[1].AIScore+"; "+lines[2].AIScore+
+                    "\n horiz> "+lines[3].AIScore+"; "+lines[4].AIScore+"; "+lines[5].AIScore+
+                    "\n diago> LtoR "+lines[6].AIScore+"; RtoL "+lines[7].AIScore);
+}
+
 
 function RandomNumber(upTo){
 
     return Math.floor(Math.random() * upTo);
 }
 
+function Result(text){
+
+    setTimeout(function(){
+        alert(text);
+        Reset();
+    }, 200)
+}
+
 function Reset(){
 
     setTimeout(function(){
-    
+
         $(".cell").removeClass("set")
             .removeClass("cross")
             .removeClass("circle")
@@ -181,11 +179,16 @@ function Reset(){
     }, 800);
 }
 
+
 function LineObject(array, user, ai){
 
     this.CellSet = array;
-
     this.UserScore = user;
-
     this.AIScore = ai;
+
+    this.SetSum = array.length;
+
+    this.Cell = function(arrayPos){
+        return ".cell[data-grid=\""+array[arrayPos]+"\"]";
+    }
 }
